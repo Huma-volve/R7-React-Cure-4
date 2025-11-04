@@ -1,11 +1,16 @@
 import { Input } from "@/components/ui/input";
 import {
   Bell,
+  BlocksIcon,
+  ChevronRight,
   Clock,
+  Heart,
   MapPinned,
   MenuIcon,
   Settings,
+  Settings2Icon,
   UserRound,
+  WalletCards,
   X,
 } from "lucide-react";
 import {
@@ -25,7 +30,11 @@ export default function NavBar() {
     <nav className="pt-[52px] pb-[24px]">
       <div className="flex container justify-between item-center">
         <div className="navaLogo">
-          <img src="./assets/logoNav.png" alt="" className="w-[32px] h-[32px]"/>
+          <img
+            src="./assets/logoNav.png"
+            alt=""
+            className="w-[32px] h-[32px]"
+          />
         </div>
         <Input type="text" placeholder="Search" className="w-[50%]" />
         <div className="flex gap-2">
@@ -45,7 +54,7 @@ export default function NavBar() {
           </Link>
           <div className="flex justify-center items-center">
             {isOpenMenu ? (
-              <MenuIcon onClick={() => setIsOpenMenu(!isOpenMenu)}/>
+              <MenuIcon onClick={() => setIsOpenMenu(!isOpenMenu)} />
             ) : (
               <X onClick={() => setIsOpenMenu(!isOpenMenu)} />
             )}
@@ -92,17 +101,36 @@ export default function NavBar() {
                 <Settings className="absolute top-1 right-1 text-[#145DB8]" />
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Clock className="w-8 h-8" />
-                <div>
-                  <div>Upcoming Appointment</div>
-                  <p className="truncate w-70 text-[#99A2AB]">
-                    Reminder: You have an appointment with...
-                  </p>
+              <DropdownMenuItem className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <WalletCards className="w-8 h-8" />
+                  <Link to="/">Payment Method</Link>
                 </div>
-                <span className="text-[#99A2AB] absolute top-0 right-0">
-                  1 min
-                </span>
+                <ChevronRight />
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <Heart className="w-8 h-8" />
+                  <Link to="/">favourite</Link>
+                </div>
+                <ChevronRight />
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <Settings2Icon className="w-8 h-8" />
+                  <Link to="/">Setting</Link>
+                </div>
+                <ChevronRight />
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <BlocksIcon className="w-8 h-8" />
+                  <Link to="/">privic & security</Link>
+                </div>
+                <ChevronRight />
+              </DropdownMenuItem>
+              <DropdownMenuItem >
+                <Link to="/" className="text-[#145DB8]">Logout</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
