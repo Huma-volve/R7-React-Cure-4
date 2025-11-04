@@ -5,6 +5,7 @@
 
 #root {
   text-align: center;
+  overflow-x: hidden;
 }
 
 .logo {
@@ -156,6 +157,7 @@ footer a:hover{
 /*Footer*/
 .container {
   width: 95%;
+  margin: auto;
   @media (width >= 40rem /* 640px */) {
     max-width: 40rem /* 640px */;
   }

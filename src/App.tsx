@@ -2,6 +2,7 @@ import { useState } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import Footer from './components/ui/footer'
+import NavBar from './components/ui/navBar'
 import './App.css'
 // import { Button } from './components/ui/button'
 
@@ -31,7 +32,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
       <Button>okk</Button> */}
-
+      <NavBar />
       <Footer />
     </>
   )
