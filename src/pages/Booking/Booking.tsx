@@ -1,20 +1,17 @@
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
 import { CalendarRange } from "lucide-react";
 
-import AppointmentCard from "./components/AppointmentCard"
+import AppointmentCard from "./components/AppointmentCard";
 
-
-async function getallAppointment(params) {
-    axios
-}
+// async function getallAppointment(params) {
+//     axios
+// }
 
 export default function Booking() {
     return (
@@ -33,8 +30,12 @@ export default function Booking() {
                     <Select>
                         <SelectTrigger className="w-[396px] ">
                             <SelectValue
-
-                                placeholder={<div className="flex"><CalendarRange className="mr-2" /> <span>Monday,July 21</span></div>}
+                                placeholder={
+                                    <div className="flex">
+                                        <CalendarRange className="mr-2" />{" "}
+                                        <span>Monday,July 21</span>
+                                    </div>
+                                }
                                 className="bg-white text-black"
                             />
                         </SelectTrigger>
