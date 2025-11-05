@@ -22,10 +22,10 @@ export default function Booking() {
                 </h2>
                 <div className="flex justify-between">
                     <ul className="flex capitalize [&_li]:focus:bg-[#145DB8] [&_li]:px-4 [&_li]:py-2  [&_li]:focus:text-white  [&_li]:rounded-[9px] [&_li]:cursor-pointer gap-2.5 [&_li]:">
-                        <li tabIndex="0">all</li>
-                        <li tabIndex="0">upcoming</li>
-                        <li tabIndex="0">complete</li>
-                        <li tabIndex="0">canceled</li>
+                        <li tabIndex={0}>all</li>
+                        <li tabIndex={0}>upcoming</li>
+                        <li tabIndex={0}>complete</li>
+                        <li tabIndex={0}>canceled</li>
                     </ul>
                     <Select>
                         <SelectTrigger className="w-[396px] ">
