@@ -11,6 +11,11 @@ import { CalendarRange } from "lucide-react";
 
 import AppointmentCard from "./components/AppointmentCard"
 
+
+async function getallAppointment(params) {
+    axios
+}
+
 export default function Booking() {
     return (
         <section className="py-16">
