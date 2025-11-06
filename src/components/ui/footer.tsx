@@ -75,9 +75,9 @@ export default function Footer() {
               <div className="mb-2 font-normal text-[24px] text-[#FFFFFF] ">
                 company
               </div>
-              <Link to="/home">Home</Link>
+              <Link to="/">Home</Link>
               <Link to="/doctors">Doctors</Link>
-              <Link to="/foqs">FoQs</Link>
+              <Link to="/">FoQs</Link>
               <Link to="/contact">Contact us</Link>
             </div>
             <div className="flex flex-col text-left gap-2 max-lg:mb-5">

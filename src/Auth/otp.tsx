@@ -4,9 +4,11 @@ import { Input } from "@/components/ui/input";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "@/redux/store";
 import { verfyOtp } from "@/redux/authSlice";
+import { useNavigate } from "react-router-dom";
 export default function Otp({ setTestotp, sign, numberUser }: any) {
   let dispatch = useDispatch<AppDispatch>();
-  let {loading} = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+  let { loading } = useSelector((state: RootState) => state.auth);
   // الحالة الأساسية للكود
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [timer, setTimer] = useState(55);
@@ -32,19 +34,25 @@ export default function Otp({ setTestotp, sign, numberUser }: any) {
   // لما يضغط verify
   const handleVerify = async () => {
     try {
-      await dispatch(
+      const result = await dispatch(
         verfyOtp({
           phoneNumber: numberUser,
           otp: otp.join(""),
-          api:sign
+          api: sign,
         })
-      ).unwrap();
+      );
+      if (verfyOtp.fulfilled.match(result)) {
+        // ✅ لو الكود صحيح
+        navigate("/");
+      } else {
+        setError(true);
+      }
     } catch (error) {
-      alert(error);
       setError(true);
+      alert(error);
     }
   };
-        
+
   // لما يضغط Resend
   const handleResend = () => {
     setOtp(["", "", "", ""]);
@@ -114,34 +122,34 @@ export default function Otp({ setTestotp, sign, numberUser }: any) {
 
         {/* زر التحقق */}
         <button
-              type="submit"
-              className="w-full bg-[#1666C0] hover:bg-[#1257A5] text-white rounded-lg h-10 mb-4 flex justify-center items-center"
-              onClick={handleVerify}
-              disabled={loading}
+          type="submit"
+          className="w-full bg-[#1666C0] hover:bg-[#1257A5] text-white rounded-lg h-10 mb-4 flex justify-center items-center"
+          onClick={handleVerify}
+          disabled={loading}
+        >
+          {loading ? (
+            <svg
+              className="mr-3 w-5 h-5 animate-spin text-white"
+              viewBox="0 0 24 24"
             >
-              {loading ? (
-                <svg
-                  className="mr-3 w-5 h-5 animate-spin text-white"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8H4z"
-                  ></path>
-                </svg>
-              ) : (
-                "verify"
-              )}
-            </button>
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8H4z"
+              ></path>
+            </svg>
+          ) : (
+            "verify"
+          )}
+        </button>
       </div>
     </div>
   );

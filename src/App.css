@@ -48,7 +48,10 @@
   color: #888;
 }
 
-
+.container{
+  width: 90%;
+  margin: auto;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
