@@ -2,7 +2,7 @@ import { Calendar, MapPin } from "lucide-react";
 
 export default function AppointmentCard() {
     return (
-        <div className="w-full max-w-md bg-white rounded-2xl border shadow-sm p-4 font-sans">
+        <div className="w-full max-w-md bg-white border-[#BBC1C7] rounded-2xl border shadow-sm p-4 font-sans">
             {/* Top Bar */}
             <div className="flex items-center justify-between border-b pb-2">
                 <div className="flex items-center gap-2 text-gray-700 font-medium">
@@ -37,7 +37,7 @@ export default function AppointmentCard() {
                     Cancel
                 </button>
 
-                <button className="w-1/2 py-2 rounded-xl [#145DB8] text-white font-medium hover:bg-blue-700 transition">
+                <button className="w-1/2 py-2 rounded-xl bg-[#145DB8] text-white font-medium hover:bg-blue-700 transition">
                     Reschedule
                 </button>
             </div>
