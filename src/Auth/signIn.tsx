@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "@/redux/store";
 import { signIn } from "@/redux/authSlice";
+import { Link } from "react-router-dom";
 export default function SignIn() {
   let [testotp, setTestotp] = useState("login");
   const [selectedCountry, setSelectedCountry] = useState({
@@ -50,12 +51,10 @@ export default function SignIn() {
       return;
     }
     try {
-      // نرسل البيانات عبر signIn thunk
       await dispatch(signIn(phoneNumber)).unwrap();
-      // لو كل حاجة تمام، ننتقل للـ OTP
+
       setTestotp("otp");
     } catch (err: any) {
-      // لو حصل خطاء من السيرفر، نعرض الرسالة
       alert(err);
     }
   };
@@ -181,12 +180,12 @@ export default function SignIn() {
             {/* Footer */}
             <p className="text-sm text-gray-500 mt-5">
               Don’t have an account?{" "}
-              <a
-                href="#"
+              <Link
+                to="/signup"
                 className="text-[#1666C0] font-medium hover:underline"
               >
                 Sign up
-              </a>
+              </Link>
             </p>
           </form>
         )}
