@@ -7,7 +7,7 @@ import { MapPin } from "lucide-react";
 
 export default function Contact() {
     return (
-        <div className="contact py-28">
+        <div className="contact py-28 ">
             <div className="container">
                 <div className="flex justify-between max-lg:flex-col ">
                     <div className="contact w-1/3 text-left">
@@ -16,7 +16,7 @@ export default function Contact() {
                             We are committed to processing the information in
                             order to contact you and talk about your questions{" "}
                         </p>
-                        <ul>
+                        <ul className="font-montserrat ">
                             <li className="flex ">
                                 <LucidePhoneCall className="mr-4 text-[#145DB8]" />
                                 080 707 555-321

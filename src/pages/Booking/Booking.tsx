@@ -8,27 +8,43 @@ import {
 import { CalendarRange } from "lucide-react";
 
 import AppointmentCard from "./components/AppointmentCard";
+import axios from "axios"
+import { useEffect } from "react";
 
-// async function getallAppointment(params) {
-//     axios
-// }
+
+
 
 export default function Booking() {
+    async function getallAppointment() {
+        const res = await axios.get("https://cure-doctor-booking.runasp.net/api/Customer/Booking/PatientBookings?pageNumber=1&pageSize=10", {
+            withCredentials: true
+
+
+        })
+        const data = await res.data
+        console.log(data)
+
+    }
+
+
+    useEffect(() => {
+        getallAppointment()
+    })
     return (
         <section className="py-16">
             <div className="container">
                 <h2 className="text-[#05162C] mb-6 text-2xl">
                     Your appointments
                 </h2>
-                <div className="flex justify-between">
-                    <ul className="flex capitalize [&_li]:focus:bg-[#145DB8] [&_li]:px-4 [&_li]:py-2  [&_li]:focus:text-white  [&_li]:rounded-[9px] [&_li]:cursor-pointer gap-2.5 [&_li]:">
+                <div className="flex justify-between max-lg:flex-col    ">
+                    <ul className="flex flex-wrap max-lg:mb-4 capitalize [&_li]:focus:bg-[#145DB8] [&_li]:px-4 [&_li]:py-2  [&_li]:focus:text-white  [&_li]:rounded-[9px] [&_li]:cursor-pointer gap-2.5 [&_li]:">
                         <li tabIndex={0}>all</li>
                         <li tabIndex={0}>upcoming</li>
                         <li tabIndex={0}>complete</li>
                         <li tabIndex={0}>canceled</li>
                     </ul>
                     <Select>
-                        <SelectTrigger className="w-[396px] ">
+                        <SelectTrigger className="sm:w-[396px] ">
                             <SelectValue
                                 placeholder={
                                     <div className="flex">

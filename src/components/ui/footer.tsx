@@ -86,7 +86,7 @@ export default function Footer() {
               </div>
               <Link to="/">Help Center</Link>
               <Link to="/">How it works</Link>
-              <Link to="/">Privacy Policy</Link>
+              <Link to="/privacy">Privacy Policy</Link>
               <Link to="/">Terms & Conditions</Link>
             </div>
             <div className="flex flex-col text-left gap-2 max-lg:mb-5">
