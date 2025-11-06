@@ -12,6 +12,7 @@ import {
   UserRound,
   WalletCards,
   X,
+  Menu as MenuIcon,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -82,40 +83,44 @@ export default function NavBar() {
         />
 
         {/* ✅ Menu & Profile */}
-        <div className="flex gap-2">
-          <Link
-            to="/"
-            className="bg-[#F5F6F7] font-normal  rounded-md text-[14px] p-1 md:p-2 "
-            style={{ display: !isOpenMenu ? "none" : "block" }}
-          >
-            Home
-          </Link>
-          <Link
-            to="/"
-            className="bg-[#F5F6F7] font-normal text-[14px] p-1 md:p-2  rounded-md"
-            style={{ display: !isOpenMenu ? "none" : "block" }}
-          >
-            Bookings
-          </Link>
-          <Link
-            to="/"
-            className="bg-[#F5F6F7]  font-normal text-[14px] p-1 md:p-2  rounded-md"
-            style={{ display: !isOpenMenu ? "none" : "block" }}
-          >
-            chat
-          </Link>
+        <div className="flex gap-2 items-center">
+          {isOpenMenu && (
+            <>
+              <Link
+                to="/"
+                className="bg-[#F5F6F7] font-normal text-[14px] p-1 md:p-2 rounded-md"
+              >
+                Home
+              </Link>
+              <Link
+                to="/booking"
+                className="bg-[#F5F6F7] text-[14px] font-normal p-1 md:p-2 rounded-md"
+              >
+                Bookings
+              </Link>
+              <Link
+                to="/chat"
+                className="bg-[#F5F6F7] font-normal text-[14px] p-1 md:p-2 rounded-md"
+              >
+                Chat
+              </Link>
+            </>
+          )}
 
+          {/* ✅ Menu Toggle */}
           <div className="flex justify-center items-center">
             {isOpenMenu ? (
-              <X onClick={() => setIsOpenMenu(!isOpenMenu)} />
+              <X
+                onClick={() => setIsOpenMenu(false)}
+                className="cursor-pointer"
+              />
             ) : (
-              <img
-                src="./assets/Component 15.png"
-                onClick={() => setIsOpenMenu(!isOpenMenu)}
+              <MenuIcon
+                onClick={() => setIsOpenMenu(true)}
+                className="cursor-pointer"
               />
             )}
           </div>
-
           {/* ✅ Notifications */}
           <DropdownMenu>
             <DropdownMenuTrigger className="w-[40px] h-[40px] bg-[#F5F6F7] flex justify-center items-center rounded-lg">
@@ -123,11 +128,11 @@ export default function NavBar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="max-h-[314px] overflow-auto">
               <DropdownMenuLabel className="bg-[#F5F6F7] text-center text-[20px] font-normal">
-                Your Notification
+                Your Notifications
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Clock style={{ width: "40px", height: "40px" }} />
+                <Clock className="w-5 h-5 mr-2" />
                 <div>
                   <div className="font-normal text-[16px]">
                     Upcoming Appointment
@@ -136,12 +141,11 @@ export default function NavBar() {
                     Reminder: You have an appointment with...
                   </p>
                 </div>
-                <span className="text-[#99A2AB] absolute top-0 right-0">
-                  1 min
-                </span>
+                <span className="text-[#99A2AB] ml-auto text-sm">1 min</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
           {/* ✅ User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger className="w-[40px] h-[40px] bg-[#F5F6F7] flex justify-center items-center rounded-lg">
@@ -162,6 +166,7 @@ export default function NavBar() {
 
               <DropdownMenuSeparator />
 
+              {/* ✅ Menu Items */}
               <DropdownMenuItem className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <WalletCards className="w-5 h-5" color="#05162C" />
@@ -194,7 +199,7 @@ export default function NavBar() {
                 <ChevronRight />
               </DropdownMenuItem>
 
-              {/* ✅ Logout with confirmation dialog */}
+              {/* ✅ Logout / SignUp */}
               {localStorage.getItem("accessToken") ? (
                 <DropdownMenuItem
                   className="flex items-center gap-2"
@@ -203,7 +208,7 @@ export default function NavBar() {
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <button className="flex items-center gap-2 text-[#FC4B4E]">
-                        <LogOut className="w-5 h-5 " color="#FC4B4E" />
+                        <LogOut className="w-5 h-5" color="#FC4B4E" />
                         Logout
                       </button>
                     </AlertDialogTrigger>
@@ -230,10 +235,10 @@ export default function NavBar() {
                   </AlertDialog>
                 </DropdownMenuItem>
               ) : (
-                <div className="flex items-center gap-2">
+                <DropdownMenuItem>
                   <LogIn className="w-5 h-5" color="#05162C" />
-                  <Link to="/">Sign Up</Link>
-                </div>
+                  <Link to="/signup">Sign Up</Link>
+                </DropdownMenuItem>
               )}
             </DropdownMenuContent>
           </DropdownMenu>

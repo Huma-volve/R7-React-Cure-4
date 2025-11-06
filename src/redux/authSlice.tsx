@@ -64,7 +64,6 @@ export const verfyOtp = createAsyncThunk(
     }
   }
 );
-
 // ✅ Slice
 const authSlice = createSlice({
   name: "auth",
