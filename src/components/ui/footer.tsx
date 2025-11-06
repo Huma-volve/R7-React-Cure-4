@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="bg-[#05162C] text-[#FFFFFF] pt-[80px] pb-[80px]">
       <div className="container mx-auto text-center">
         <div className="flex flex-wrap">
-          <div className="w-full lg:w-1/2 lg:mb-3 max-lg:mb-10 max-lg:justify-center max-lg:items-center flex flex-none flex-col gap-4 text-left left">
+          <div className="w-full lg:w-1/2 lg:mb-3 max-lg:mb-10 max-lg:justify-center max-lg:items-center flex flex-none flex-col gap-4 text-left ">
             <div className="flex items-center gap-4">
               <img
                 src="./assets/BsHeartPulse.png"
