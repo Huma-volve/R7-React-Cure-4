@@ -11,6 +11,7 @@ import Booking from "./pages/Booking/Booking.tsx";
 import Privacy from "./pages/Privacy/Privacy.tsx";
 
 import Footer from "./components/ui/footer.tsx";
+import SearchDoctor from "./pages/SearchDoctor/SearchDoctor.tsx";
 
 function App() {
     return (
@@ -21,7 +22,7 @@ function App() {
                 {/* <Route path="/" element={<Home />} /> dont forget import the component */}
                 <Route path="/booking" element={<Booking />} />
                 <Route path="/privacy" element={<Privacy />} />
-                {/* <Route path="/contact" element={<Contact />} /> */}
+                <Route path="/Search-Doctor" element={<SearchDoctor />} />
             </Routes>
             {/* <SignIn /> */}
             <Footer />
