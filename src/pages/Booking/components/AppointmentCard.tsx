@@ -9,7 +9,7 @@ export default function AppointmentCard() {
                     <Calendar size={20} />
                     <span>Monday, July 21 - 11:00 AM</span>
                 </div>
-                <span className="text-blue-600 font-semibold text-sm">Upcoming</span>
+                <span className="text-[#145DB8] font-semibold text-sm">Upcoming</span>
             </div>
 
             {/* Doctor Info */}
@@ -37,7 +37,7 @@ export default function AppointmentCard() {
                     Cancel
                 </button>
 
-                <button className="w-1/2 py-2 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition">
+                <button className="w-1/2 py-2 rounded-xl [#145DB8] text-white font-medium hover:bg-blue-700 transition">
                     Reschedule
                 </button>
             </div>

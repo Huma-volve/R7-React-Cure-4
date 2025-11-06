@@ -1,10 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-
 #root {
   overflow-x: hidden;
 }
+
+
 
 .logo {
   height: 6em;
@@ -46,6 +47,8 @@
 .read-the-docs {
   color: #888;
 }
+
+
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -157,56 +160,6 @@
 /*Footer*/
 footer a:hover {
   color: blue !important;
-}
-
-/*Footer*/
-.container {
-  width: 95%;
-  margin: auto;
-  @media (width >=40rem
-
-    /* 640px */
-  ) {
-    max-width: 40rem
-      /* 640px */
-    ;
-  }
-
-  @media (width >=48rem
-
-    /* 768px */
-  ) {
-    max-width: 48rem
-      /* 768px */
-    ;
-  }
-
-  @media (width >=64rem
-
-    /* 1024px */
-  ) {
-    max-width: 64rem
-      /* 1024px */
-    ;
-  }
-
-  @media (width >=80rem
-
-    /* 1280px */
-  ) {
-    max-width: 80rem
-      /* 1280px */
-    ;
-  }
-
-  @media (width >=96rem
-
-    /* 1536px */
-  ) {
-    max-width: 96rem
-      /* 1536px */
-    ;
-  }
 }
 
 @layer base {
