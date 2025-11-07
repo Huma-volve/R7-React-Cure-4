@@ -1,32 +1,34 @@
-//import { useState } from "react";
-//import SignIn from "./signIn";
-import Footer from "./components/ui/footer";
-import "./App.css";
+import { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/ui/navBar";
-import AppointmentPage from "./components/ui/AppointmentPage";
-// import Payment from "./components/ui/Payment";
-// import RatingPopup from "./components/ui/RatingPopup";
-function App() {
-  //   const [open, setOpen] = useState(false);
-  // const handleSubmit = async ({ rating, review }: { rating: number; review: string }) => {
-   
-  //   console.log("submit", rating, review);
-  //}
+import Footer from "./components/ui/footer";
+import ContactUs from "./pages/ContactUs/ContactUs";
+import Booking from "./pages/Booking/Booking";
+import Privacy from "./pages/Privacy/Privacy";
+import SignUp from "./Auth/signUp";
+import SignIn from "./Auth/signIn";
+import Home from "./pages/home/home";
+import { useLocation } from "react-router-dom";
+import RefrehToken from "./Auth/refrehToken";
+import "./App.css";
+export default function App() {
+  const { pathname } = useLocation();
+  const hideNav = ["/signin", "/signup"].includes(pathname);
+  useEffect(() => {
+    RefrehToken();
+  }, []);
   return (
     <>
-     {/* <button className="rounded bg-blue-600 px-4 py-2 text-white" onClick={() => setOpen(true)}>
-        Rate Doctor
-      </button> */}
-
-      <NavBar />
-      <AppointmentPage />
-      {/* <Payment />
-      <RatingPopup /> */}
-      {/* <RatingPopup open={open} onClose={() => setOpen(false)} onSubmit={handleSubmit}  /> */}
-      {/* <SignIn /> */}
-      <Footer />
+      {!hideNav && <NavBar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/contact" element={<ContactUs />} />
+        <Route path="/booking" element={<Booking />} />
+        <Route path="/privacy" element={<Privacy />} />
+      </Routes>
+      {!hideNav && <Footer />}
     </>
   );
 }
-
-export default App;

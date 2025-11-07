@@ -1,2 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,500&display=swap');
+
+
 @import "tailwindcss";
 
+
+
+@theme {
+    /* === Fonts === */
+    --font-georgia: "Georgia", serif;
+    --font-montserrat: "Montserrat", sans-serif;
+
+    /* === Font Weights === */
+    --font-regular: 400;
+    --font-medium: 500;
+
+    /* === Font Sizes === */
+    --text-heading-1: 40px;
+    --text-heading-2: 32px;
+    --text-heading-3: 24px;
+    --text-subheading: 20px;
+    --text-button: 16px;
+    --text-caption: 14px;
+    --text-small-caption: 12px;
+
+    /* === Line Height (auto) === */
+    --leading-auto: normal;
+}
+
+body {
+    font-family: var(--font-montserrat);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-georgia);
+
+}
+
+
+
+@media (min-width: 426px) {
+    .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 0 50px;
+    }
+}
+
+@media (max-width: 425px) {
+    .container {
+        max-width: 100%;
+        margin: auto;
+        padding: 0 20px;
+    }
+}
