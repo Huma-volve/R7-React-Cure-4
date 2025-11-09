@@ -1,11 +1,19 @@
-import { configureStore } from '@reduxjs/toolkit';
-//import authReducer from './slices/authSlice'; // مثال لمستقبلك
-import authSlice from './authSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./authSlice";
+import appointmentReducer from "./appointmentSlice";
+import paymentReducer from "./paymentSlice";
+import rateReducer from "./rateSlice";
+import doctorsReducer from "./doctorsSlice";
+
 export const store = configureStore({
   reducer: {
-    auth: authSlice,
-    // تقدر تضيف reducers تانية هنا
+    auth: authReducer,
+    appointments: appointmentReducer,
+    payments: paymentReducer,
+    doctors: doctorsReducer,
+    rate: rateReducer,
   },
 });
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
