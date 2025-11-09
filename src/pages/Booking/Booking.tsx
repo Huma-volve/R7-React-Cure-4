@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 
 
 export default function Booking() {
-    const [msg, setmsg] = useState(null)
+    const [msg, setmsg] = useState<string | null>(null);
 
     const token = (localStorage.getItem("accessToken") || "")
 
@@ -33,9 +33,17 @@ export default function Booking() {
                 const data = await res.data
                 console.log(data)
 
-            } catch (error) {
-                setmsg(error.response.data.message)
-                // console.log()
+            } catch (error: unknown) {
+                if (axios.isAxiosError(error)) {
+                    // ✅ TypeScript دلوقتي عارف إن error هو AxiosError
+                    setmsg(error.response?.data?.message || "Request failed");
+                } else if (error instanceof Error) {
+                    // ✅ في حالة error عادي
+                    setmsg(error.message);
+                } else {
+                    // ✅ fallback
+                    setmsg("An unexpected error occurred");
+                }
             }
         }
         getallAppointment()
