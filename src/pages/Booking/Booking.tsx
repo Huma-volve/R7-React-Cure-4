@@ -9,40 +9,37 @@ import { CalendarRange } from "lucide-react";
 
 import AppointmentCard from "./components/AppointmentCard";
 import axios from "axios"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 
 
 export default function Booking() {
-    const token = JSON.parse(localStorage.getItem("user") || "").data.accessToken;
+    const [msg, setmsg] = useState(null)
 
-    async function getallAppointment() {
-        try {
-            const res = await axios.get(
-                "https://cure-doctor-booking.runasp.net/api/Customer/Booking/PatientBookings",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`, // ✅ أرسل التوكن هنا
-                    },
+    const token = (localStorage.getItem("accessToken") || "")
 
-                }
-            );
-            console.log(res.message)
-
-            console.log("Appointments:", res.data);
-            return res.data;
-        } catch (error) {
-            console.error("Error fetching appointments:", error);
-        }
-        // const data = await res.data
-
-    }
 
 
     useEffect(() => {
+        async function getallAppointment() {
+            try {
+                const res = await axios.get("https://cure-doctor-booking.runasp.net/api/Customer/Booking/PatientBookings?pageNumber=1&pageSize=10", {
+
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                })
+                const data = await res.data
+                console.log(data)
+
+            } catch (error) {
+                setmsg(error.response.data.message)
+                // console.log()
+            }
+        }
         getallAppointment()
-    })
+    }, [token])
     return (
         <section className="py-16">
             <div className="container">
@@ -84,8 +81,9 @@ export default function Booking() {
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="gird grid-cols-4 mt-6">
-                    <AppointmentCard />
+                <div className="grid grid-cols-4 mt-6">
+                    {msg ? msg : <AppointmentCard />
+                    }
                 </div>
             </div>
         </section>
