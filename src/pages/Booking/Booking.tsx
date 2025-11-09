@@ -72,17 +72,17 @@ export default function Booking() {
                             />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="Monday,July 21">
-                                <CalendarRange /> Monday,July 21
+                            <SelectItem value="Monday,July 22">
+                                <CalendarRange /> Monday,July 22
                             </SelectItem>
                             <SelectItem value="Monday,July 21">
                                 {" "}
                                 <CalendarRange /> Monday,July 21
                             </SelectItem>
-                            <SelectItem value="Monday,July 21">
+                            <SelectItem value="Monday,July 23">
                                 {" "}
                                 <CalendarRange />
-                                Monday,July 21
+                                Monday,July 23
                             </SelectItem>
                         </SelectContent>
                     </Select>
