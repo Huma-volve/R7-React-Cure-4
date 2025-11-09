@@ -9,24 +9,37 @@ import { CalendarRange } from "lucide-react";
 
 import AppointmentCard from "./components/AppointmentCard";
 import axios from "axios"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 
 
 export default function Booking() {
-    async function getallAppointment() {
-        const res = await axios.get("https://cure-doctor-booking.runasp.net/api/Customer/Booking/PatientBookings?pageNumber=1&pageSize=10", {
-        })
-        const data = await res.data
-        console.log(data)
+    const [msg, setmsg] = useState(null)
 
-    }
+    const token = (localStorage.getItem("accessToken") || "")
+
 
 
     useEffect(() => {
+        async function getallAppointment() {
+            try {
+                const res = await axios.get("https://cure-doctor-booking.runasp.net/api/Customer/Booking/PatientBookings?pageNumber=1&pageSize=10", {
+
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                })
+                const data = await res.data
+                console.log(data)
+
+            } catch (error) {
+                setmsg(error.response.data.message)
+                // console.log()
+            }
+        }
         getallAppointment()
-    })
+    }, [token])
     return (
         <section className="py-16">
             <div className="container">
@@ -68,8 +81,9 @@ export default function Booking() {
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="gird grid-cols-4 mt-6">
-                    <AppointmentCard />
+                <div className="grid grid-cols-4 mt-6">
+                    {msg ? msg : <AppointmentCard />
+                    }
                 </div>
             </div>
         </section>
