@@ -15,14 +15,27 @@ import { useEffect } from "react";
 
 
 export default function Booking() {
+    const token = JSON.parse(localStorage.getItem("user") || "").data.accessToken;
+
     async function getallAppointment() {
-        const res = await axios.get("https://cure-doctor-booking.runasp.net/api/Customer/Booking/PatientBookings?pageNumber=1&pageSize=10", {
-            withCredentials: true
+        try {
+            const res = await axios.get(
+                "https://cure-doctor-booking.runasp.net/api/Customer/Booking/PatientBookings",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // ✅ أرسل التوكن هنا
+                    },
 
+                }
+            );
+            console.log(res.message)
 
-        })
-        const data = await res.data
-        console.log(data)
+            console.log("Appointments:", res.data);
+            return res.data;
+        } catch (error) {
+            console.error("Error fetching appointments:", error);
+        }
+        // const data = await res.data
 
     }
 
