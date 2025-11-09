@@ -17,9 +17,6 @@ import { useEffect } from "react";
 export default function Booking() {
     async function getallAppointment() {
         const res = await axios.get("https://cure-doctor-booking.runasp.net/api/Customer/Booking/PatientBookings?pageNumber=1&pageSize=10", {
-            withCredentials: true
-
-
         })
         const data = await res.data
         console.log(data)
