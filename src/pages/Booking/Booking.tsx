@@ -88,9 +88,11 @@ export default function Booking() {
                     </Select>
                 </div>
                 <div className="grid grid-cols-4 mt-6">
-                    {msg ? msg : <AppointmentCard />
+                    {!msg && < AppointmentCard />
                     }
+
                 </div>
+                {msg && msg}
             </div>
         </section>
     );
