@@ -8,6 +8,8 @@ import Privacy from "./pages/Privacy/Privacy";
 import SignUp from "./Auth/signUp";
 import SignIn from "./Auth/signIn";
 import Home from "./pages/home/home";
+import DoctorsPage from "./pages/the-map/DoctorsPage";
+import Appointment from "./pages/appointment/AppointmentPage"; 
 import { useLocation } from "react-router-dom";
 import RefrehToken from "./Auth/refrehToken";
 import "./App.css";
@@ -27,6 +29,8 @@ export default function App() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/appointment" element={<Appointment />} />
+        <Route path="/doctors" element={<DoctorsPage />} />
       </Routes>
       {!hideNav && <Footer />}
     </>
