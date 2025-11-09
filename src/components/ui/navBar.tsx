@@ -12,7 +12,6 @@ import {
   UserRound,
   WalletCards,
   X,
-  Menu as MenuIcon,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -24,7 +23,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,29 +35,21 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "@/redux/authSlice";
+import type { AppDispatch, RootState } from "@/redux/store";
 export default function NavBar() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading } = useSelector((state: RootState) => state.auth);
   function handleLogout() {
-    axios
-      .post(
-        "https://cure-doctor-booking.runasp.net/api/Identity/Accounts/logout",
-        {
-          refreshToken: localStorage.getItem("refreshToken"),
-        }
-      )
+    dispatch(logoutUser())
+      .unwrap()
       .then(() => {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        localStorage.removeItem("user");
+        console.log("✅ Logged out successfully");
       })
-      .catch((error) => {
-        console.error(error);
-        const message =
-          error.response?.data?.message ||
-          error.message ||
-          "Something went wrong. Please try again.";
-        alert(message);
+      .catch((err) => {
+        alert(err);
       });
   }
 
@@ -71,7 +61,7 @@ export default function NavBar() {
           <img
             src="./assets/logoNav.png"
             alt="Logo"
-            className="w-[32px] h-[32px]"
+            className="w-[30px] h-[30px] md:w-[40px] md:h-[40px]"
           />
         </div>
 
@@ -88,19 +78,19 @@ export default function NavBar() {
             <>
               <Link
                 to="/"
-                className="bg-[#F5F6F7] font-normal text-[14px] p-1 md:p-2 rounded-md"
+                className="bg-[#F5F6F7] font-normal text-[12px] p-1 md:p-2 rounded-md"
               >
                 Home
               </Link>
               <Link
                 to="/booking"
-                className="bg-[#F5F6F7] text-[14px] font-normal p-1 md:p-2 rounded-md"
+                className="bg-[#F5F6F7] text-[12px] font-normal p-1 md:p-2 rounded-md"
               >
                 Bookings
               </Link>
               <Link
                 to="/chat"
-                className="bg-[#F5F6F7] font-normal text-[14px] p-1 md:p-2 rounded-md"
+                className="bg-[#F5F6F7] font-normal text-[12px] p-1 md:p-2 rounded-md"
               >
                 Chat
               </Link>
@@ -108,14 +98,16 @@ export default function NavBar() {
           )}
 
           {/* ✅ Menu Toggle */}
-          <div className="flex justify-center items-center">
+          <div className=" w-[30px] h-[30px] md:w-[40px] md:h-[40px] bg-[#F5F6F7] flex justify-center items-center rounded-lg">
             {isOpenMenu ? (
               <X
                 onClick={() => setIsOpenMenu(false)}
                 className="cursor-pointer"
               />
             ) : (
-              <MenuIcon
+              <img
+                src="./assets/Component 15.png"
+                alt=""
                 onClick={() => setIsOpenMenu(true)}
                 className="cursor-pointer"
               />
@@ -123,8 +115,8 @@ export default function NavBar() {
           </div>
           {/* ✅ Notifications */}
           <DropdownMenu>
-            <DropdownMenuTrigger className="w-[40px] h-[40px] bg-[#F5F6F7] flex justify-center items-center rounded-lg">
-              <Bell />
+            <DropdownMenuTrigger className="w-[30px] h-[30px] md:w-[40px] md:h-[40px] bg-[#F5F6F7] flex justify-center items-center rounded-lg">
+              <Bell className="cursor-pointer" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="max-h-[314px] overflow-auto">
               <DropdownMenuLabel className="bg-[#F5F6F7] text-center text-[20px] font-normal">
@@ -132,7 +124,7 @@ export default function NavBar() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Clock className="w-5 h-5 mr-2" />
+                <Clock className="w-5 h-5 mr-2 " />
                 <div>
                   <div className="font-normal text-[16px]">
                     Upcoming Appointment
@@ -145,12 +137,19 @@ export default function NavBar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          {/* ✅ User Menu */}
           <DropdownMenu>
-            <DropdownMenuTrigger className="w-[40px] h-[40px] bg-[#F5F6F7] flex justify-center items-center rounded-lg">
-              <UserRound />
+            <DropdownMenuTrigger className="w-[30px] h-[30px] md:w-[40px] md:h-[40px] bg-[#F5F6F7] flex justify-center items-center rounded-lg">
+              {localStorage.getItem("accessToken") ? (
+                <img
+                  src="./assets/Ellipse 1537 (1).png"
+                  alt=""
+                  className=" bg-[#F5F6F7] flex justify-center items-center rounded-lg"
+                />
+              ) : (
+                <UserRound className="cursor-pointer" />
+              )}
             </DropdownMenuTrigger>
+
             <DropdownMenuContent className="bg-[#F5F6F7] w-[300px]">
               <DropdownMenuLabel className="text-center text-[20px] font-normal flex gap-2 relative">
                 <img src="./assets/Ellipse 1537 (1).png" alt="" />
@@ -161,7 +160,7 @@ export default function NavBar() {
                     129, El-Nasr Street, Cairo
                   </p>
                 </div>
-                <Settings className="absolute top-1 right-1 text-[#145DB8]" />
+                <Settings className="absolute top-1 right-1 text-[#145DB8]  cursor-pointer" />
               </DropdownMenuLabel>
 
               <DropdownMenuSeparator />
@@ -185,7 +184,7 @@ export default function NavBar() {
 
               <DropdownMenuItem className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <Settings className="w-5 h-5" color="#05162C" />
+                  <Settings className="w-5 h-5 " color="#05162C" />
                   <Link to="/">Settings</Link>
                 </div>
                 <ChevronRight />
@@ -194,7 +193,7 @@ export default function NavBar() {
               <DropdownMenuItem className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <LockKeyhole className="w-5 h-5" color="#05162C" />
-                  <Link to="/">Privacy & Security</Link>
+                  <Link to="/privacy">Privacy & Security</Link>
                 </div>
                 <ChevronRight />
               </DropdownMenuItem>
@@ -207,7 +206,7 @@ export default function NavBar() {
                 >
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <button className="flex items-center gap-2 text-[#FC4B4E]">
+                      <button className="flex items-center gap-2 text-[rgb(252,75,78)] cursor-pointer">
                         <LogOut className="w-5 h-5" color="#FC4B4E" />
                         Logout
                       </button>
@@ -226,9 +225,30 @@ export default function NavBar() {
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={handleLogout}
-                          className="text-[#FC4B4E]"
+                          className="text-[#FC4B4E] bg-white border border-[#FC4B4E] hover:bg-[#FC4B4E] hover:text-white"
                         >
-                          Continue
+                          {loading ? (
+                            <svg
+                              className="mr-3 w-5 h-5 animate-spin text-white"
+                              viewBox="0 0 24 24"
+                            >
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              ></circle>
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8v8H4z"
+                              ></path>
+                            </svg>
+                          ) : (
+                            "continue"
+                          )}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>

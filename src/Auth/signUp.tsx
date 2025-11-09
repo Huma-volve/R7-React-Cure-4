@@ -1,5 +1,6 @@
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Otp from "./otp";
 import {
   DropdownMenu,
@@ -23,6 +24,7 @@ export default function SignUp() {
     flag: "/assets/egyptFlag.png",
     placeholder: "+20 100 000 0000",
   });
+
   const [testotp, setTestotp] = useState("register");
 
   const countries = [
@@ -54,25 +56,24 @@ export default function SignUp() {
 
   // تابع إرسال البيانات عبر Redux
   const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault(); // لمنع إعادة تحميل الصفحة
+    e.preventDefault();
+
     if (!formData.fullName || !formData.email || !formData.phoneNumber) {
       alert("Please fill in all fields.");
       return;
     }
+
     try {
-      // نرسل البيانات عبر signUp thunk
       await dispatch(signUp(formData)).unwrap();
-      // لو كل حاجة تمام، ننتقل للـ OTP
-      setTestotp("otp");
+      setTestotp("otp"); // الانتقال إلى شاشة OTP بعد التسجيل
     } catch (err: any) {
-      // لو حصل خطأ من السيرفر، نعرض الرسالة
       alert(err);
     }
   };
 
   return (
-    <div className="h-[100vh] w-[100%] relative flex justify-center items-center flex-col">
-      <div className=" flex items-center justify-center sm:w-[300px] md:w-[360px] lg:w-[420px] min-w-[250px]">
+    <div className="h-[100vh] w-full relative flex justify-center items-center flex-col">
+      <div className="flex items-center justify-center sm:w-[300px] md:w-[360px] lg:w-[420px] min-w-[250px]">
         {testotp !== "register" ? (
           <Otp
             setTestotp={setTestotp}
@@ -80,13 +81,19 @@ export default function SignUp() {
             numberUser={formData.phoneNumber}
           />
         ) : (
-          <form className="flex flex-col items-center sm:w-[258px] md:w-[320px] lg:w-[360px] min-w-[210px]">
+          <form
+            onSubmit={handleSignUp}
+            className="flex flex-col items-center sm:w-[258px] md:w-[320px] lg:w-[360px] min-w-[210px]"
+          >
             <h2 className="text-[32px] font-semibold text-[#05162C] mb-2">
               Sign up
             </h2>
-            <p className="text-[12px] text-[#6D7379] mb-6">
+
+            <p className="text-[12px] text-[#6D7379] mb-6 text-center">
               Please provide all information required to create your account
             </p>
+
+            {/* Full Name */}
             <Input
               type="text"
               placeholder="Full Name"
@@ -98,6 +105,7 @@ export default function SignUp() {
               required
             />
 
+            {/* Email */}
             <Input
               type="email"
               placeholder="Email"
@@ -109,6 +117,7 @@ export default function SignUp() {
               required
             />
 
+            {/* Phone Number */}
             <div className="w-full flex items-center border rounded-lg overflow-hidden mb-5 border-[#D8DEE5]">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -122,10 +131,7 @@ export default function SignUp() {
                   </button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent
-                  align="start"
-                  className="rounded-lg bg-white"
-                >
+                <DropdownMenuContent align="start" className="rounded-lg bg-white">
                   {countries.map((country) => (
                     <DropdownMenuItem
                       key={country.name}
@@ -157,10 +163,10 @@ export default function SignUp() {
               />
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               className="w-full bg-[#1666C0] hover:bg-[#1257A5] text-white rounded-lg h-10 mb-4 flex justify-center items-center"
-              onClick={handleSignUp}
               disabled={loading}
             >
               {loading ? (
@@ -186,9 +192,41 @@ export default function SignUp() {
                 "Sign up"
               )}
             </button>
+
+            {/* Divider */}
+            <div className="flex items-center w-full my-3">
+              <div className="flex-grow border-t border-gray-300"></div>
+              <span className="px-3 text-gray-500 text-sm">or</span>
+              <div className="flex-grow border-t border-gray-300"></div>
+            </div>
+
+            {/* Google Sign-in */}
+            <Button
+              variant="outline"
+              className="w-full rounded-lg flex items-center justify-center gap-2 text-gray-700"
+            >
+              <img
+                src="https://www.svgrepo.com/show/355037/google.svg"
+                alt="Google"
+                className="w-4 h-4"
+              />
+              Sign in with Google
+            </Button>
+
+            {/* Footer */}
+            <p className="text-sm text-gray-500 mt-5">
+              Already have an account?{" "}
+              <Link
+                to="/signin"
+                className="text-[#1666C0] font-medium hover:underline"
+              >
+                Sign in
+              </Link>
+            </p>
           </form>
         )}
       </div>
+
       {/* Background & Logo */}
       <img
         src="/assets/logoNav.png"

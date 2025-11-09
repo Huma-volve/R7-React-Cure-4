@@ -10,8 +10,8 @@ export const signIn = createAsyncThunk(
         "https://cure-doctor-booking.runasp.net/api/Identity/Accounts/login",
         { phoneNumber }
       );
-      console.log("📥 Received sign up response:", response.data);
-      console.log("📥 Received sign up response:", response);
+      // console.log("📥 Received sign up response:", response.data);
+      // console.log("📥 Received sign up response:", response);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message);
@@ -34,8 +34,8 @@ export const signUp = createAsyncThunk(
         "https://cure-doctor-booking.runasp.net/api/Identity/Accounts/register",
         { fullName, email, phoneNumber }
       );
-      console.log("📥 Received sign up response:", response.data);
-      console.log("📥 Received sign up response:", response);
+      // console.log("📥 Received sign up response:", response.data);
+      // console.log("📥 Received sign up response:", response);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message);
@@ -47,18 +47,57 @@ export const signUp = createAsyncThunk(
 export const verfyOtp = createAsyncThunk(
   "auth/verfyOtp",
   async (
-    { phoneNumber, otp , api }: { phoneNumber: string; otp: string, api: string },
+    {
+      phoneNumber,
+      otp,
+      api,
+    }: { phoneNumber: string; otp: string; api: string },
     { rejectWithValue }
   ) => {
     try {
-      console.log("📤 Sending OTP verify request:", { phoneNumber, otp });
+      // console.log("📤 Sending OTP verify request:", { phoneNumber, otp });
       const response = await axios.post(
         `https://cure-doctor-booking.runasp.net/api/Identity/Accounts/verify-${api}`,
         { phoneNumber, otpNumber: otp }
       );
-      console.log("📥 Received OTP verify response:", response.data);
-      console.log("📥 Received OTP verify response:", response);
+      // console.log("📥 Received OTP verify response:", response.data);
+      // console.log("📥 Received OTP verify response:", response);
+
       return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+// logout thunk
+export const logoutUser = createAsyncThunk(
+  "auth/logoutUser",
+  async (_, { rejectWithValue }) => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (!refreshToken) {
+      return rejectWithValue(
+        "⚠️ No refresh token found. You might already be logged out."
+      );
+    }
+
+    try {
+      await axios.post(
+        "https://cure-doctor-booking.runasp.net/api/Identity/Accounts/logout",
+        { refreshToken },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("user");
+
+      return true;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message);
     }
@@ -72,14 +111,7 @@ const authSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {
-    logout: (state) => {
-      state.user = null;
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("user");
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     // ---- signIn ----
     builder
@@ -120,24 +152,34 @@ const authSlice = createSlice({
       .addCase(verfyOtp.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-
-        const userData = action.payload; // 👈 بيانات المستخدم الراجعة من السيرفر
-
-        // حفظ الـ tokens
+        const userData = action.payload.data;
         if (userData.accessToken) {
           localStorage.setItem("accessToken", userData.accessToken);
         }
         if (userData.refreshToken) {
           localStorage.setItem("refreshToken", userData.refreshToken);
         }
-        localStorage.setItem("user", JSON.stringify(userData));
       })
       .addCase(verfyOtp.rejected, (state: any, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+    // ---- logout User ----
+    builder
+      .addCase(logoutUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.loading = false;
+        state.user = null;
+      })
+      .addCase(logoutUser.rejected, (state, action: any) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const { logout } = authSlice.actions;
+// export const { logout } = authSlice.actions;
 export default authSlice.reducer;
