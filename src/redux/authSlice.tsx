@@ -95,11 +95,34 @@ export const logoutUser = createAsyncThunk(
 
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      localStorage.removeItem("user");
-
       return true;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+export const fetchUserProfile = createAsyncThunk(
+  "user/fetchProfile",
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      const response = await axios.get(
+        "https://cure-doctor-booking.runasp.net/api/profile/Editprofile/getprofile",
+        {
+          headers: {
+            Authorization: `Bearer  ${token}`,
+          },
+        }
+      );
+      console.log("📥 Received user profile response:", response.data);
+      localStorage.setItem("user", JSON.stringify(response.data));
+      return response.data; // بيرجع البيانات للـ slice
+    } catch (error: any) {
+      // لو السيرفر رجع 401 أو أي خطأ
+      return rejectWithValue(
+        error.response?.data || "فشل في جلب بيانات المستخدم"
+      );
     }
   }
 );
@@ -178,8 +201,21 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
+    // ---- get User ----
+    builder
+      .addCase(fetchUserProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(fetchUserProfile.rejected, (state, action: any) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 
-// export const { logout } = authSlice.actions;
 export default authSlice.reducer;
