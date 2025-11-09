@@ -35,13 +35,11 @@ export default function Booking() {
 
             } catch (error: unknown) {
                 if (axios.isAxiosError(error)) {
-                    // ✅ TypeScript دلوقتي عارف إن error هو AxiosError
+
                     setmsg(error.response?.data?.message || "Request failed");
                 } else if (error instanceof Error) {
-                    // ✅ في حالة error عادي
                     setmsg(error.message);
                 } else {
-                    // ✅ fallback
                     setmsg("An unexpected error occurred");
                 }
             }
