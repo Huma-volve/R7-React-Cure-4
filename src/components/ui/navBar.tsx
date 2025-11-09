@@ -1,4 +1,5 @@
 import { Input } from "@/components/ui/input";
+import { useEffect } from "react";
 import {
   Bell,
   ChevronRight,
@@ -37,22 +38,38 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/redux/authSlice";
+import { fetchUserProfile } from "@/redux/authSlice";
 import type { AppDispatch, RootState } from "@/redux/store";
 export default function NavBar() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.auth);
+
   function handleLogout() {
     dispatch(logoutUser())
       .unwrap()
       .then(() => {
-        console.log("✅ Logged out successfully");
+        // console.log("✅ Logged out successfully");
       })
       .catch((err) => {
         alert(err);
       });
   }
-
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      // console.log(
+      //   JSON.parse(localStorage.getItem("user") as string).data.imgUrl
+      // );
+      dispatch(fetchUserProfile())
+        .unwrap()
+        .then(() => {
+          // console.log("✅ Profile retrieved successfully");
+        })
+        .catch((err) => {
+          // console.log(err);
+        });
+    }
+  }, []);
   return (
     <nav className="pt-[52px] pb-[24px]">
       <div className="flex container justify-between items-center">
@@ -139,15 +156,29 @@ export default function NavBar() {
           </DropdownMenu>
           <DropdownMenu>
             <DropdownMenuTrigger className="w-[30px] h-[30px] md:w-[40px] md:h-[40px] bg-[#F5F6F7] flex justify-center items-center rounded-lg">
-              {localStorage.getItem("accessToken") ? (
-                <img
-                  src="./assets/Ellipse 1537 (1).png"
-                  alt=""
-                  className=" bg-[#F5F6F7] flex justify-center items-center rounded-lg"
-                />
-              ) : (
-                <UserRound className="cursor-pointer" />
-              )}
+              {(() => {
+                const userData = localStorage.getItem("user")
+                  ? JSON.parse(localStorage.getItem("user") as string)
+                  : null;
+
+                const imgUrl = userData?.data?.imgUrl;
+
+                // نتأكد إن الصورة موجودة فعليًا وليست فارغة أو افتراضية
+                const isValidImg =
+                  imgUrl &&
+                  imgUrl.trim() !== "" &&
+                  !imgUrl.includes("default.png");
+
+                return isValidImg ? (
+                  <img
+                    src={`https://cure-doctor-booking.runasp.net${imgUrl}`}
+                    alt=""
+                    className="bg-[#F5F6F7] flex justify-center items-center rounded-lg"
+                  />
+                ) : (
+                  <UserRound className="cursor-pointer" />
+                );
+              })()}
             </DropdownMenuTrigger>
 
             <DropdownMenuContent className="bg-[#F5F6F7] w-[300px]">
