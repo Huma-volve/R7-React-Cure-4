@@ -1,4 +1,3 @@
-import { ChevronDownIcon } from "lucide-react";
 import Otp from "./otp";
 import { useState } from "react";
 import {
@@ -14,13 +13,14 @@ import type { AppDispatch, RootState } from "@/redux/store";
 import { signIn } from "@/redux/authSlice";
 import { Link } from "react-router-dom";
 export default function SignIn() {
-  let [testotp, setTestotp] = useState("login");
+  const [testotp, setTestotp] = useState("login");
   const [selectedCountry, setSelectedCountry] = useState({
     name: "Egypt",
     code: "+20",
     flag: "/assets/egyptFlag.png",
     placeholder: "+20 100 000 0000",
   });
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const countries = [
     {
@@ -42,20 +42,22 @@ export default function SignIn() {
       placeholder: "+34 612 345 678",
     },
   ];
-  let [phoneNumber, setPhoneNumber] = useState("");
-  let dispatch = useDispatch<AppDispatch>();
-  let { loading } = useSelector((state: RootState) => state.auth);
-  const handleSignIn = async () => {
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading } = useSelector((state: RootState) => state.auth);
+
+  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (phoneNumber === "") {
       alert("Please enter your phone number");
       return;
     }
     try {
       await dispatch(signIn(phoneNumber)).unwrap();
-
       setTestotp("otp");
-    } catch (err: any) {
-      alert(err);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      alert(errorMessage);
     }
   };
 
@@ -70,7 +72,10 @@ export default function SignIn() {
             numberUser={phoneNumber}
           />
         ) : (
-          <form className="flex flex-col items-center sm:w-[258px] md:w-[320px] lg:w-[360px] min-w-[210px] ">
+          <form
+            onSubmit={handleSignIn}
+            className="flex flex-col items-center sm:w-[258px] md:w-[320px] lg:w-[360px] min-w-[210px]"
+          >
             {/* Title */}
             <h2 className="text-[32px] font-semibold text-[#05162C] mb-2">
               Sign in
@@ -83,13 +88,15 @@ export default function SignIn() {
             <div className="w-full flex items-center border rounded-lg overflow-hidden mb-5 border-[#D8DEE5]">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-gray-50 border-r border-[#D8DEE5]">
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-gray-50 border-r border-[#D8DEE5]"
+                  >
                     <img
                       src={selectedCountry.flag}
                       alt={selectedCountry.name}
                       className="w-6 h-6 object-cover rounded-full"
                     />
-                    <ChevronDownIcon className="w-4 h-4 text-gray-600" />
                   </button>
                 </DropdownMenuTrigger>
 
@@ -115,7 +122,7 @@ export default function SignIn() {
               </DropdownMenu>
 
               <Input
-                type="number"
+                type="tel"
                 inputMode="numeric"
                 dir="ltr"
                 placeholder={selectedCountry.placeholder}
@@ -130,7 +137,6 @@ export default function SignIn() {
             <button
               type="submit"
               className="w-full bg-[#1666C0] hover:bg-[#1257A5] text-white rounded-lg h-10 mb-4 flex justify-center items-center"
-              onClick={handleSignIn}
               disabled={loading}
             >
               {loading ? (
@@ -166,6 +172,7 @@ export default function SignIn() {
 
             {/* Google button */}
             <Button
+              type="button"
               variant="outline"
               className="w-full rounded-lg flex items-center justify-center gap-2 text-gray-700"
             >
@@ -179,7 +186,7 @@ export default function SignIn() {
 
             {/* Footer */}
             <p className="text-sm text-gray-500 mt-5">
-              Don’t have an account?{" "}
+              Don't have an account?{" "}
               <Link
                 to="/signup"
                 className="text-[#1666C0] font-medium hover:underline"
